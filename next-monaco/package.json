@@ -1,0 +1,53 @@
+{
+  "name": "next-monaco",
+  "version": "0.0.0",
+  "description": "Monaco Editor x Next.js",
+  "files": [
+    "dist/*"
+  ],
+  "main": "./dist/src/index.js",
+  "module": "./dist/src/index.mjs",
+  "exports": {
+    ".": {
+      "import": "./dist/src/index.mjs",
+      "require": "./dist/src/index.js"
+    },
+    "./editor": {
+      "import": "./dist/editor/index.mjs",
+      "require": "./dist/editor/index.js"
+    }
+  },
+  "types": "./dist/src/index.d.ts",
+  "typesVersions": {
+    "*": {
+      ".": [
+        "./dist/src/index.d.ts"
+      ],
+      "editor": [
+        "./dist/editor/index.d.ts"
+      ]
+    }
+  },
+  "scripts": {
+    "build": "tsup src/index.ts editor/index.ts --dts --format esm,cjs",
+    "dev": "pnpm build --watch",
+    "test": "jest"
+  },
+  "peerDependencies": {
+    "next": ">=13.0.0",
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0"
+  },
+  "devDependencies": {
+    "next": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "webpack": "latest"
+  },
+  "dependencies": {
+    "monaco-editor": "^0.34.0",
+    "monaco-editor-webpack-plugin": "^7.0.1",
+    "vscode-oniguruma": "^1.7.0",
+    "vscode-textmate": "^9.0.0"
+  }
+}
