@@ -45,7 +45,6 @@
     "webpack": "latest"
   },
   "dependencies": {
-    "color": "4.2.3",
     "monaco-editor": "0.36.1",
     "monaco-editor-webpack-plugin": "7.0.1",
     "shiki": "^0.14.1",
