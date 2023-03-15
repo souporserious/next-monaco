@@ -8,7 +8,6 @@ import type {
   StateStack,
 } from 'vscode-textmate'
 import type { LanguageId, LanguageInfo } from './register'
-import { getTheme } from './theme'
 
 /** String identifier for a "scope name" such as 'source.cpp' or 'source.java'. */
 export type ScopeName = string
@@ -61,8 +60,7 @@ export class SimpleLanguageInfoProvider {
 
   constructor(private config: SimpleLanguageInfoProviderConfig) {
     const { grammars, fetchGrammar, onigLib, monaco } = config
-    const theme = getTheme(JSON.parse(process.env.MONACO_THEME)) as any
-    // const theme = JSON.parse(process.env.MONACO_THEME)
+    const theme = JSON.parse(process.env.MONACO_THEME) as any
 
     this.monaco = monaco
 

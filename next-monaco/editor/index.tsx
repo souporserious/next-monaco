@@ -7,10 +7,31 @@ import { createOnigScanner, createOnigString, loadWASM } from 'vscode-oniguruma'
 import { SimpleLanguageInfoProvider } from './providers'
 import { registerLanguages } from './register'
 import { rehydrateRegexps } from './configuration'
+import { getTheme } from './theme'
 
 interface DemoScopeNameInfo extends ScopeNameInfo {
   path: string
 }
+
+/* Convert VS Code theme to Monaco theme */
+// TODO: this should allow setting multiple themes that are all defined at the same time e.g. <Editor theme="night-owl" />
+try {
+  monaco.editor.defineTheme(
+    'next-monaco',
+    getTheme(JSON.parse(process.env.MONACO_THEME))
+  )
+  monaco.editor.setTheme('next-monaco')
+} catch (error) {
+  throw new Error(
+    `next-monaco: Invalid theme configuration. Make sure theme is set to a path that exists and defines a valid VS Code theme.`,
+    { cause: error }
+  )
+}
+
+monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
+  jsx: monaco.languages.typescript.JsxEmit.Preserve,
+  esModuleInterop: true,
+})
 
 main('typescript')
 
@@ -28,14 +49,6 @@ async function main(language: LanguageId) {
     {
       id: 'typescript',
       extensions: ['.ts', '.tsx'],
-      aliases: ['TypeScript', 'ts'],
-      filenames: [
-        'tsconfig.json',
-        'tslint.json',
-        'tsconfig.app.json',
-        'tsconfig.lib.json',
-      ],
-      firstLine: '^#!\\s*/?.*\\bnode\\b',
     },
   ]
   const grammars: { [scopeName: string]: DemoScopeNameInfo } = {
@@ -106,15 +119,7 @@ async function main(language: LanguageId) {
   const editor = monaco.editor.create(element, {
     model,
     language,
-    theme: 'vs-dark',
-    minimap: {
-      enabled: true,
-    },
-  })
-
-  monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
-    jsx: monaco.languages.typescript.JsxEmit.Preserve,
-    esModuleInterop: true,
+    theme: 'next-monaco',
   })
 
   const colorMap = provider.getColorMap()

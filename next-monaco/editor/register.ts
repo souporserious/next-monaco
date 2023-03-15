@@ -27,7 +27,7 @@ export function registerLanguages(
     // Recall that the id is a short name like 'cpp' or 'java'.
     const { id: languageId } = extensionPoint
 
-    console.log('Registering language:', languageId)
+    console.log('registering language:', languageId)
 
     monaco.languages.register(extensionPoint)
 
