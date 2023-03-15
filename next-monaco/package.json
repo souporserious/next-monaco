@@ -29,7 +29,7 @@
     }
   },
   "scripts": {
-    "build": "tsup src/index.ts editor/index.ts --dts --format esm,cjs",
+    "build": "tsup src/index.ts editor/index.tsx --dts --format esm,cjs",
     "dev": "pnpm build --watch",
     "test": "jest"
   },
@@ -45,8 +45,10 @@
     "webpack": "latest"
   },
   "dependencies": {
-    "monaco-editor": "^0.34.0",
-    "monaco-editor-webpack-plugin": "^7.0.1",
+    "color": "4.2.3",
+    "monaco-editor": "0.36.1",
+    "monaco-editor-webpack-plugin": "7.0.1",
+    "shiki": "^0.14.1",
     "vscode-oniguruma": "^1.7.0",
     "vscode-textmate": "^9.0.0"
   }

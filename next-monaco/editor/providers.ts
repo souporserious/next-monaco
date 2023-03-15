@@ -1,21 +1,14 @@
-import type * as monaco from 'monaco-editor'
+import * as monaco from 'monaco-editor'
+import { INITIAL, Registry, parseRawGrammar } from 'vscode-textmate'
 type Monaco = typeof monaco
 import type {
   IGrammar,
   IRawGrammar,
-  IRawTheme,
   IOnigLib,
   StateStack,
 } from 'vscode-textmate'
 import type { LanguageId, LanguageInfo } from './register'
-
-import { INITIAL, Registry, parseRawGrammar } from 'vscode-textmate'
-// @ts-ignore
-import { generateTokensCSSForColorMap } from 'monaco-editor/esm/vs/editor/common/modes/supports/tokenization.js'
-// @ts-ignore
-import { TokenizationRegistry } from 'monaco-editor/esm/vs/editor/common/modes.js'
-// @ts-ignore
-import { Color } from 'monaco-editor/esm/vs/base/common/color.js'
+import { getTheme } from './theme'
 
 /** String identifier for a "scope name" such as 'source.cpp' or 'source.java'. */
 export type ScopeName = string
@@ -26,7 +19,6 @@ export type TextMateGrammar = {
 }
 
 export type SimpleLanguageInfoProviderConfig = {
-  // Key is a ScopeName.
   grammars: { [scopeName: string]: ScopeNameInfo }
 
   fetchGrammar: (scopeName: ScopeName) => Promise<TextMateGrammar>
@@ -37,12 +29,8 @@ export type SimpleLanguageInfoProviderConfig = {
     language: LanguageId
   ) => Promise<monaco.languages.LanguageConfiguration>
 
-  // This must be available synchronously to the SimpleLanguageInfoProvider
-  // constructor, so the user is responsible for fetching the theme data rather
-  // than SimpleLanguageInfoProvider.
-  theme: IRawTheme
-
   onigLib: Promise<IOnigLib>
+
   monaco: Monaco
 }
 
@@ -72,7 +60,10 @@ export class SimpleLanguageInfoProvider {
   private tokensProviderCache: TokensProviderCache
 
   constructor(private config: SimpleLanguageInfoProviderConfig) {
-    const { grammars, fetchGrammar, theme, onigLib, monaco } = config
+    const { grammars, fetchGrammar, onigLib, monaco } = config
+    const theme = getTheme(JSON.parse(process.env.MONACO_THEME)) as any
+    // const theme = JSON.parse(process.env.MONACO_THEME)
+
     this.monaco = monaco
 
     this.registry = new Registry({
@@ -88,6 +79,11 @@ export class SimpleLanguageInfoProvider {
         // If this is a JSON grammar, filePath must be specified with a `.json`
         // file extension or else parseRawGrammar() will assume it is a PLIST
         // grammar.
+        console.log(
+          'loaded grammar:',
+          type,
+          parseRawGrammar(grammar, `example.${type}`)
+        )
         return parseRawGrammar(grammar, `example.${type}`)
       },
 
@@ -114,21 +110,6 @@ export class SimpleLanguageInfoProvider {
     this.tokensProviderCache = new TokensProviderCache(this.registry)
   }
 
-  /**
-   * Be sure this is done after Monaco injects its default styles so that the
-   * injected CSS overrides the defaults.
-   */
-  injectCSS() {
-    const cssColors = this.registry.getColorMap()
-    const colorMap = cssColors.map(Color.Format.CSS.parseHex)
-    // This is needed to ensure the minimap gets the right colors.
-    TokenizationRegistry.setColorMap(colorMap)
-    const css = generateTokensCSSForColorMap(colorMap)
-    const style = createStyleElementForColorsCSS()
-    // @ts-ignore
-    style.innerHTML = css
-  }
-
   async fetchLanguageInfo(language: LanguageId): Promise<LanguageInfo> {
     const [tokensProvider, configuration] = await Promise.all([
       this.getTokensProviderForLanguage(language),
@@ -141,17 +122,16 @@ export class SimpleLanguageInfoProvider {
     language: string
   ): Promise<monaco.languages.EncodedTokensProvider | null> {
     const scopeName = this.getScopeNameForLanguage(language)
+
     if (scopeName == null) {
-      return Promise.resolve(null)
+      throw new Error(`No scope name found for language ${language}`)
     }
 
-    const encodedLanguageId =
-      this.monaco.languages.getEncodedLanguageId(language)
     // Ensure the result of createEncodedTokensProvider() is resolved before
     // setting the language configuration.
     return this.tokensProviderCache.createEncodedTokensProvider(
       scopeName,
-      encodedLanguageId
+      this.monaco.languages.getEncodedLanguageId(language)
     )
   }
 
@@ -162,6 +142,10 @@ export class SimpleLanguageInfoProvider {
       }
     }
     return null
+  }
+
+  getColorMap() {
+    return this.registry.getColorMap()
   }
 }
 
@@ -175,6 +159,8 @@ class TokensProviderCache {
     encodedLanguageId: number
   ): Promise<monaco.languages.EncodedTokensProvider> {
     const grammar = await this.getGrammar(scopeName, encodedLanguageId)
+
+    console.log('retrieving grammar for scope', scopeName)
 
     return {
       getInitialState() {
@@ -197,6 +183,7 @@ class TokensProviderCache {
 
   getGrammar(scopeName: string, encodedLanguageId: number): Promise<IGrammar> {
     const grammar = this.scopeNameToGrammar.get(scopeName)
+
     if (grammar != null) {
       return grammar
     }
@@ -225,29 +212,9 @@ class TokensProviderCache {
           throw Error(`failed to load grammar for ${scopeName}`)
         }
       })
+
     this.scopeNameToGrammar.set(scopeName, promise)
+
     return promise
   }
-}
-
-function createStyleElementForColorsCSS(): HTMLStyleElement {
-  // We want to ensure that our <style> element appears after Monaco's so that
-  // we can override some styles it inserted for the default theme.
-  const style = document.createElement('style')
-
-  // We expect the styles we need to override to be in an element with the class
-  // name 'monaco-colors' based on:
-  // https://github.com/microsoft/vscode/blob/f78d84606cd16d75549c82c68888de91d8bdec9f/src/vs/editor/standalone/browser/standaloneThemeServiceImpl.ts#L206-L214
-  const monacoColors = document.getElementsByClassName('monaco-colors')[0]
-  if (monacoColors) {
-    monacoColors.parentElement?.insertBefore(style, monacoColors.nextSibling)
-  } else {
-    // Though if we cannot find it, just append to <head>.
-    let { head } = document
-    if (head == null) {
-      head = document.getElementsByTagName('head')[0]
-    }
-    head?.appendChild(style)
-  }
-  return style
 }

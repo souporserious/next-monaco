@@ -36,7 +36,11 @@ export function rehydrateRegexps(
   for (const property of REGEXP_PROPERTIES) {
     const value = getProp(out, property)
     if (typeof value === 'string') {
-      setProp(out, property, new RegExp(value))
+      try {
+        setProp(out, property, new RegExp(value))
+      } catch (e) {
+        console.error(`Failed to rehydrate regex for property: ${property}`, e)
+      }
     }
   }
   return out

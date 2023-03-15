@@ -4,13 +4,10 @@ import { existsSync } from 'node:fs'
 
 const publicDirectory = path.join(process.cwd(), 'public')
 
-const basePath = `node_modules/monaco/node_modules`
+const basePath = `node_modules/next-monaco/node_modules`
 const pathsToCopy = [
-  //   `onigasm/lib/onigasm.wasm`,
-  //   `shiki/languages/javascript.tmLanguage.json`,
-  //   `shiki/languages/jsx.tmLanguage.json`,
-  //   `shiki/languages/typescript.tmLanguage.json`,
-  //   `shiki/languages/tsx.tmLanguage.json`,
+  `shiki/languages/typescript.tmLanguage.json`,
+  `shiki/languages/tsx.tmLanguage.json`,
 ]
 
 /** Creates the public files necessary for the Editor component. */
@@ -35,10 +32,13 @@ export async function createPublicFiles() {
           path.join(publicDirectory, 'monaco', path.basename(url))
         )
       })
-    )
+    ).catch((err) => {
+      console.error(err)
+      process.exit(1)
+    })
 
     console.log(
-      `next-monaco: copied textmate grammars to ${publicDirectory.replace(
+      `monaco: copied textmate grammars to ${publicDirectory.replace(
         process.cwd(),
         ''
       )}`
