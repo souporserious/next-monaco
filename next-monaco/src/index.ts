@@ -30,7 +30,7 @@ export function createMonacoPlugin({ theme }: { theme: string }) {
     }
 
     return async () => {
-      await createPublicFiles()
+      // await createPublicFiles()
 
       if (nextConfig.env === undefined) {
         nextConfig.env = {}
