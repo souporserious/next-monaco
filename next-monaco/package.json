@@ -45,10 +45,12 @@
     "webpack": "latest"
   },
   "dependencies": {
-    "monaco-editor": "0.36.1",
-    "monaco-editor-webpack-plugin": "7.0.1",
-    "shiki": "^0.14.1",
+    "monaco-editor": "^0.34.1",
+    "monaco-editor-webpack-plugin": "^7.0.1",
+    "throttle-debounce": "^5.0.0",
     "vscode-oniguruma": "^1.7.0",
-    "vscode-textmate": "^9.0.0"
+    "vscode-textmate": "^7.0.1",
+    "vscode": "npm:@codingame/monaco-vscode-api@~1.69.0",
+    "worker-loader": "^3.0.8"
   }
 }
