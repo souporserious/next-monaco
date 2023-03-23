@@ -5,17 +5,11 @@
   "files": [
     "dist/*"
   ],
+  "type": "module",
   "main": "./dist/src/index.js",
-  "module": "./dist/src/index.mjs",
   "exports": {
-    ".": {
-      "import": "./dist/src/index.mjs",
-      "require": "./dist/src/index.js"
-    },
-    "./editor": {
-      "import": "./dist/editor/index.mjs",
-      "require": "./dist/editor/index.js"
-    }
+    ".": "./dist/src/index.js",
+    "./editor": "./dist/editor/index.js"
   },
   "types": "./dist/src/index.d.ts",
   "typesVersions": {
@@ -29,7 +23,7 @@
     }
   },
   "scripts": {
-    "build": "tsup src/index.ts editor/index.tsx --dts --format esm,cjs",
+    "build": "tsup src/index.ts editor/index.tsx --dts --format esm",
     "dev": "pnpm build --watch",
     "test": "jest"
   },
@@ -47,10 +41,8 @@
   "dependencies": {
     "monaco-editor": "^0.34.1",
     "monaco-editor-webpack-plugin": "^7.0.1",
-    "throttle-debounce": "^5.0.0",
     "vscode-oniguruma": "^1.7.0",
     "vscode-textmate": "^7.0.1",
-    "vscode": "npm:@codingame/monaco-vscode-api@~1.69.0",
-    "worker-loader": "^3.0.8"
+    "vscode": "npm:@codingame/monaco-vscode-api@~1.69.0"
   }
 }
