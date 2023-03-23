@@ -9,8 +9,11 @@ export function createMonacoPlugin({ theme }: { theme: string }) {
 
     nextConfig.webpack = (config, options) => {
       config.module.rules.push({
-        test: /\.wasm$/,
+        test: /onig\.wasm$/,
         type: 'asset/resource',
+        generator: {
+          filename: 'static/wasm/onigasm.wasm',
+        },
       })
 
       if (typeof getWebpackConfig === 'function') {
