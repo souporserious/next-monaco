@@ -1,15 +1,6 @@
-'use client'
 import * as React from 'react'
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api'
 import { createConfiguredEditor } from 'vscode/monaco'
-import './setup'
-
-// TODO: for some reason this only works when the entire editor directory is imported locally
-// import 'monaco-editor/esm/vs/language/typescript/monaco.contribution'
-
-// monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
-//   jsx: monaco.languages.typescript.JsxEmit.Preserve,
-// })
 
 export default function Editor({ defaultValue }: { defaultValue: string }) {
   const ref = React.useRef<HTMLDivElement>(null)

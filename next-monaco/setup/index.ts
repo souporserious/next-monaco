@@ -125,3 +125,11 @@ setGrammars(
     throw new Error(`Grammar not found for: ${grammar.language}`)
   }
 )
+
+export async function setupEditor() {
+  await import('monaco-editor/esm/vs/language/typescript/monaco.contribution')
+
+  monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
+    jsx: monaco.languages.typescript.JsxEmit.Preserve,
+  })
+}

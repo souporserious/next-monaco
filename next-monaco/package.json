@@ -9,7 +9,9 @@
   "main": "./dist/src/index.js",
   "exports": {
     ".": "./dist/src/index.js",
-    "./editor": "./dist/editor/index.js"
+    "./contribution": "./dist/contribution/index.js",
+    "./editor": "./dist/editor/index.js",
+    "./setup": "./dist/setup/index.js"
   },
   "types": "./dist/src/index.d.ts",
   "typesVersions": {
@@ -17,13 +19,19 @@
       ".": [
         "./dist/src/index.d.ts"
       ],
+      "contribution": [
+        "./dist/contribution/index.d.ts"
+      ],
       "editor": [
         "./dist/editor/index.d.ts"
+      ],
+      "setup": [
+        "./dist/setup/index.d.ts"
       ]
     }
   },
   "scripts": {
-    "build": "tsup src/index.ts editor/index.tsx --dts --format esm",
+    "build": "tsup src/index.ts setup/index.ts editor/index.ts --dts --format esm",
     "dev": "pnpm build --watch",
     "test": "jest"
   },

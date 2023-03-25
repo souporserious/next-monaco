@@ -6,13 +6,9 @@
     "build": "next build"
   },
   "dependencies": {
-    "next": "canary",
+    "next": "latest",
     "next-monaco": "workspace:*",
     "react": "latest",
     "react-dom": "latest"
-  },
-  "devDependencies": {
-    "@types/node": "18.15.5",
-    "@types/react": "18.0.28"
   }
 }
