@@ -9,7 +9,6 @@
   "main": "./dist/src/index.js",
   "exports": {
     ".": "./dist/src/index.js",
-    "./contribution": "./dist/contribution/index.js",
     "./editor": "./dist/editor/index.js",
     "./setup": "./dist/setup/index.js"
   },
@@ -18,9 +17,6 @@
     "*": {
       ".": [
         "./dist/src/index.d.ts"
-      ],
-      "contribution": [
-        "./dist/contribution/index.d.ts"
       ],
       "editor": [
         "./dist/editor/index.d.ts"

@@ -1,7 +1,5 @@
-import dynamic from 'next/dynamic'
+import { Editor } from 'next-monaco/editor'
 import './app.css'
-
-const Editor = dynamic(() => import('next-monaco/editor'), { ssr: false })
 
 const defaultValue = `
 /**

@@ -1,10 +1,4 @@
 'use client'
-import '../setup'
-import * as monaco from 'monaco-editor/esm/vs/editor/editor.api'
-import 'monaco-editor/esm/vs/language/typescript/monaco.contribution'
+import dynamic from 'next/dynamic'
 
-monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
-  jsx: monaco.languages.typescript.JsxEmit.Preserve,
-})
-
-export { default } from './editor'
+export const Editor = dynamic(() => import('./initialize'), { ssr: false })
