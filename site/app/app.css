@@ -2,3 +2,7 @@ body {
   margin: 0;
   background-color: #101218;
 }
+
+pre {
+  font-size: 14px;
+}

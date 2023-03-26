@@ -20,18 +20,22 @@ importers:
 
   next-monaco:
     specifiers:
+      '@code-hike/lighter': ^0.5.2
       monaco-editor: ^0.34.1
       monaco-editor-webpack-plugin: ^7.0.1
       next: latest
       react: latest
       react-dom: latest
+      server-only: ^0.0.1
       vscode: npm:@codingame/monaco-vscode-api@~1.69.0
       vscode-oniguruma: ^1.7.0
       vscode-textmate: ^7.0.1
       webpack: latest
     dependencies:
+      '@code-hike/lighter': 0.5.2
       monaco-editor: 0.34.1
       monaco-editor-webpack-plugin: 7.0.1_rmpovqpn77vqd33rnpqnye4w7y
+      server-only: 0.0.1
       vscode: /@codingame/monaco-vscode-api/1.69.24_g6wwalfvxveeaqtrrxeuuwea44
       vscode-oniguruma: 1.7.0
       vscode-textmate: 7.0.4
@@ -54,6 +58,10 @@ importers:
       react-dom: 18.2.0_react@18.2.0
 
 packages:
+
+  /@code-hike/lighter/0.5.2:
+    resolution: {integrity: sha512-5/pzY6y3FtmjZ7JGY/PJ3f6q4KBFEk9Xw5i+uDXOu9Wzh8gvmr7lF1IU94paq/vgh8TDYR5O+vBaiR13NXqKTA==}
+    dev: false
 
   /@codingame/monaco-vscode-api/1.69.24_g6wwalfvxveeaqtrrxeuuwea44:
     resolution: {integrity: sha512-D105o8lg/sKUAjQKOlDlEvmnnfUpB/3cBr37ZpF5cFQrHqnJ/0XwWsk2iET36brrdjsk67l0Uctik98in8BzxA==}
@@ -1317,6 +1325,10 @@ packages:
     resolution: {integrity: sha512-owoXEFjWRllis8/M1Q+Cw5k8ZH40e3zhp/ovX+Xr/vi1qj6QesbyXXViFbpNvWvPNAD62SutwEXavefrLJWj7w==}
     dependencies:
       randombytes: 2.1.0
+
+  /server-only/0.0.1:
+    resolution: {integrity: sha512-qepMx2JxAa5jjfzxG79yPPq+8BuFToHd1hm7kI+Z4zAq1ftQiP7HcxMhDDItrbtwVeLg/cY2JnKnrcFkmiswNA==}
+    dev: false
 
   /shebang-command/2.0.0:
     resolution: {integrity: sha512-kHxr2zZpYtdmrN1qDjrrX/Z1rR1kG8Dx+gkpK1G4eXmvXswmcE1hTWBWYUzlraYw1/yZp6YuDY77YtvbN0dmDA==}

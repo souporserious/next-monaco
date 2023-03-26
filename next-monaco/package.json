@@ -9,8 +9,7 @@
   "main": "./dist/src/index.js",
   "exports": {
     ".": "./dist/src/index.js",
-    "./editor": "./dist/editor/index.js",
-    "./setup": "./dist/setup/index.js"
+    "./editor": "./dist/editor/index.js"
   },
   "types": "./dist/src/index.d.ts",
   "typesVersions": {
@@ -20,14 +19,11 @@
       ],
       "editor": [
         "./dist/editor/index.d.ts"
-      ],
-      "setup": [
-        "./dist/setup/index.d.ts"
       ]
     }
   },
   "scripts": {
-    "build": "tsup src/index.ts setup/index.ts editor/index.ts --dts --format esm",
+    "build": "tsup src/index.ts setup/index.ts client/index.tsx editor/index.tsx --dts --format esm",
     "dev": "pnpm build --watch",
     "test": "jest"
   },
@@ -43,8 +39,10 @@
     "webpack": "latest"
   },
   "dependencies": {
+    "@code-hike/lighter": "^0.5.2",
     "monaco-editor": "^0.34.1",
     "monaco-editor-webpack-plugin": "^7.0.1",
+    "server-only": "^0.0.1",
     "vscode-oniguruma": "^1.7.0",
     "vscode-textmate": "^7.0.1",
     "vscode": "npm:@codingame/monaco-vscode-api@~1.69.0"
