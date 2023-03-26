@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic'
 
 const LazyEditor = dynamic(() => import('./initialize'), { ssr: false })
 
-export function Editor({
+export function ClientEditor({
   defaultValue,
   children,
 }: {
@@ -14,12 +14,12 @@ export function Editor({
   const [mounted, setMounted] = React.useState(false)
 
   return (
-    <>
+    <div style={{ display: 'grid' }}>
       {mounted ? null : children}
       <LazyEditor
         defaultValue={defaultValue}
         onMount={() => setMounted(true)}
       />
-    </>
+    </div>
   )
 }

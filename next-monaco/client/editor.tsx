@@ -2,6 +2,9 @@ import * as React from 'react'
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api'
 import { createConfiguredEditor } from 'vscode/monaco'
 
+const MIN_LINE_COUNT = 1
+const LINE_HEIGHT = 21
+
 export default function Editor({
   defaultValue,
   onMount,
@@ -11,6 +14,9 @@ export default function Editor({
 }) {
   const ref = React.useRef<HTMLDivElement>(null)
   const [opacity, setOpacity] = React.useState(0)
+  const lineCount = defaultValue
+    ? Math.max(defaultValue.split('\n').length, MIN_LINE_COUNT)
+    : MIN_LINE_COUNT
 
   React.useLayoutEffect(() => {
     const model = monaco.editor.createModel(
@@ -22,27 +28,29 @@ export default function Editor({
       model,
       fontSize: 14,
       fontFamily: 'monospace',
-      lineNumbers: 'off',
       folding: false,
       automaticLayout: true,
+      scrollBeyondLastLine: false,
+      renderLineHighlightOnlyWhenFocus: true,
       language: 'typescript',
       contextmenu: false,
       formatOnPaste: true,
       formatOnType: true,
       minimap: { enabled: false },
-      lineNumbersMinChars: 0,
     })
 
-    const margin = editor.getDomNode().querySelector('.margin') as HTMLElement
-    const marginOverlay = editor
-      .getDomNode()
-      .querySelector('.margin-view-overlays') as HTMLElement
-    const scrollableElement = editor
-      .getDomNode()
-      .querySelector('.monaco-scrollable-element') as HTMLElement
+    const editorNode = editor.getDomNode()
+    const margin = editorNode.querySelector('.margin') as HTMLElement
+    const marginOverlay = editorNode.querySelector(
+      '.margin-view-overlays'
+    ) as HTMLElement
+    const scrollableElement = editorNode.querySelector(
+      '.monaco-scrollable-element'
+    ) as HTMLElement
 
     margin.style.width = `0px`
     marginOverlay.style.width = `0px`
+    scrollableElement.style.width = `100%`
     scrollableElement.style.left = `0px`
 
     /** Add artificial delay to avoid flicker */
@@ -62,7 +70,7 @@ export default function Editor({
       ref={ref}
       style={{
         gridArea: '1 / 1',
-        height: 200,
+        height: lineCount * LINE_HEIGHT,
         opacity,
       }}
     />
