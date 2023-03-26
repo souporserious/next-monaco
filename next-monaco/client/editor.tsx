@@ -3,7 +3,7 @@ import * as monaco from 'monaco-editor/esm/vs/editor/editor.api'
 import { createConfiguredEditor } from 'vscode/monaco'
 
 const MIN_LINE_COUNT = 1
-const LINE_HEIGHT = 21
+const LINE_HEIGHT = 20
 
 export default function Editor({
   defaultValue,
@@ -26,8 +26,10 @@ export default function Editor({
     )
     const editor = createConfiguredEditor(ref.current!, {
       model,
-      fontSize: 14,
       fontFamily: 'monospace',
+      fontSize: 14,
+      lineHeight: LINE_HEIGHT,
+      lineNumbers: 'off',
       folding: false,
       automaticLayout: true,
       scrollBeyondLastLine: false,
