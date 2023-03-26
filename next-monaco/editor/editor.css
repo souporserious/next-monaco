@@ -1,7 +1,0 @@
-.next-editor {
-  display: grid;
-}
-
-.next-editor > * {
-  grid-area: 1 / 1;
-}
