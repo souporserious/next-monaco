@@ -1,4 +1,4 @@
-import { createMonacoPlugin } from 'next-monaco'
+import { createMonacoPlugin } from 'next-monaco/plugin'
 
 const withMonaco = createMonacoPlugin({ theme: 'theme.json' })
 

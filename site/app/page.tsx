@@ -1,15 +1,11 @@
-import { Editor } from 'next-monaco/editor'
+import { Editor } from 'next-monaco'
 import './app.css'
 
 const defaultValue = `
-/**
- * Say hello.
- *
- * @example
- * <Hello name="Penny" />
- */
-function Hello({ name }: { name: string }) {
-  return <div>Hello, {name}</div>
+import { Editor } from 'next-monaco'
+
+export default function App() {
+  return <Editor defaultValue={\`import { Editor } from 'next-monaco'\`} />
 }
 `.trim()
 
@@ -18,7 +14,7 @@ export default function Page() {
     <div
       style={{
         display: 'grid',
-        gridTemplateRows: '1fr auto',
+        gridTemplateRows: '1fr auto 0.25fr',
         minHeight: '100vh',
       }}
     >
@@ -49,7 +45,7 @@ export default function Page() {
           >
             <h2>
               The same powerful editor used in VS Code loaded on-demand in your
-              browser
+              Next.js application.
             </h2>
             <p>
               Next Monaco provides a familiar full-featured code editing

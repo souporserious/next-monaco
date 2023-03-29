@@ -14,7 +14,7 @@ async function AsyncEditor({ defaultValue }: { defaultValue: string }) {
     <ClientEditor defaultValue={defaultValue}>
       <pre style={{ gridArea: '1 / 1', margin: 0 }}>
         {lines.map((line, index) => (
-          <div key={index} style={{ lineHeight: '20px' }}>
+          <div key={index} style={{ height: 20, lineHeight: '20px' }}>
             {line.map((token, index) => (
               <span key={index} style={token.style}>
                 {token.content}
