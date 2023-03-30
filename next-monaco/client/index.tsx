@@ -16,7 +16,14 @@ export function ClientEditor({
   const [mounted, setMounted] = React.useState(false)
 
   return (
-    <div style={{ display: 'grid' }}>
+    <div
+      style={{
+        display: 'grid',
+        border: '1px solid #2f384f',
+        padding: '1rem',
+        borderRadius: 3,
+      }}
+    >
       {mounted ? null : children}
       <LazyEditor name={name} value={value} onMount={() => setMounted(true)} />
     </div>
