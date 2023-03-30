@@ -5,7 +5,12 @@ const defaultValue = `
 import { Editor } from 'next-monaco'
 
 export default function App() {
-  return <Editor defaultValue={\`import { Editor } from 'next-monaco'\`} />
+  return (
+    <Editor
+      name="index.tsx"
+      value={\`import { React } from 'react'\`}
+    />
+  )
 }
 `.trim()
 
@@ -14,10 +19,22 @@ export default function Page() {
     <div
       style={{
         display: 'grid',
-        gridTemplateRows: '1fr auto 0.25fr',
+        gridTemplateRows: 'auto 1fr auto 0.25fr',
         minHeight: '100vh',
       }}
     >
+      <div
+        style={{
+          fontWeight: 600,
+          padding: '1rem',
+          backgroundColor: '#d39e5a',
+          color: '#1c1309',
+          textAlign: 'center',
+        }}
+      >
+        This package is still a work in progress. The APIs are not stable and
+        may change.
+      </div>
       <div
         style={{
           display: 'grid',
@@ -49,12 +66,12 @@ export default function Page() {
             </h2>
             <p>
               Next Monaco provides a familiar full-featured code editing
-              experience without sacrificing time to first byte.{' '}
+              experience without sacrificing time to first byte.
             </p>
           </div>
           <code>npm install next-monaco</code>
         </div>
-        <Editor defaultValue={defaultValue} />
+        <Editor name="index.tsx" value={defaultValue} />
       </div>
       <div
         style={{
@@ -73,12 +90,3 @@ export default function Page() {
     </div>
   )
 }
-
-// <Editor>
-//   <Model name="file.tsx" source={source} />
-//   <Model name="app.css" source={source} active />
-// </Editor>
-
-// <Editor filename="index.tsx" contents="const a = 'b'" theme="dark" />
-
-// <Editor name="index.tsx" source="const a = 'b'" />

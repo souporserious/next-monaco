@@ -6,16 +6,16 @@
     "dist/*"
   ],
   "type": "module",
-  "main": "./dist/editor/index.js",
+  "main": "./dist/server/index.js",
   "exports": {
-    ".": "./dist/editor/index.js",
+    ".": "./dist/server/index.js",
     "./plugin": "./dist/plugin/index.js"
   },
-  "types": "./dist/src/index.d.ts",
+  "types": "./dist/server/index.d.ts",
   "typesVersions": {
     "*": {
       ".": [
-        "./dist/editor/index.d.ts"
+        "./dist/server/index.d.ts"
       ],
       "plugin": [
         "./dist/plugin/index.d.ts"
@@ -23,7 +23,7 @@
     }
   },
   "scripts": {
-    "build": "tsup plugin/index.ts setup/index.ts client/index.tsx editor/index.tsx --dts --format esm",
+    "build": "tsup plugin/index.ts setup/index.ts client/index.tsx server/index.tsx --dts --format esm",
     "dev": "pnpm build --watch",
     "test": "jest"
   },

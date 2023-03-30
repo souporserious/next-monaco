@@ -1,28 +1,40 @@
+/**
+ * Note, the order of these imports are important.
+ * Contributions must be loaded after the editor is initialized.
+ */
+import '../setup'
+import { createConfiguredEditor } from 'vscode/monaco'
 import * as React from 'react'
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api'
-import { createConfiguredEditor } from 'vscode/monaco'
+import 'monaco-editor/esm/vs/language/typescript/monaco.contribution'
+
+monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
+  jsx: monaco.languages.typescript.JsxEmit.Preserve,
+})
 
 const MIN_LINE_COUNT = 1
 const LINE_HEIGHT = 20
 
 export default function Editor({
-  defaultValue,
+  name,
+  value,
   onMount,
 }: {
-  defaultValue: string
+  name: string
+  value: string
   onMount?: () => void
 }) {
   const ref = React.useRef<HTMLDivElement>(null)
   const [opacity, setOpacity] = React.useState(0)
-  const lineCount = defaultValue
-    ? Math.max(defaultValue.split('\n').length, MIN_LINE_COUNT)
+  const lineCount = value
+    ? Math.max(value.split('\n').length, MIN_LINE_COUNT)
     : MIN_LINE_COUNT
 
   React.useLayoutEffect(() => {
     const model = monaco.editor.createModel(
-      defaultValue,
-      'typescript',
-      monaco.Uri.file('index.tsx')
+      value,
+      getLanguageFromFileExtension(name.split('.').pop()),
+      monaco.Uri.file(name)
     )
     const editor = createConfiguredEditor(ref.current!, {
       model,
@@ -77,4 +89,18 @@ export default function Editor({
       }}
     />
   )
+}
+
+const fileExtensionToLanguage = {
+  js: 'javascript',
+  jsx: 'javascript',
+  ts: 'typescript',
+  tsx: 'typescript',
+  json: 'json',
+  html: 'html',
+  css: 'css',
+}
+
+function getLanguageFromFileExtension(extension) {
+  return fileExtensionToLanguage[extension] || 'plaintext'
 }
