@@ -12,6 +12,12 @@ monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
   jsx: monaco.languages.typescript.JsxEmit.Preserve,
 })
 
+const typeDeclarations = JSON.parse(process.env.MONACO_TYPES)
+
+typeDeclarations.forEach(({ code, path }) => {
+  monaco.languages.typescript.typescriptDefaults.addExtraLib(code, path)
+})
+
 const MIN_LINE_COUNT = 1
 const LINE_HEIGHT = 20
 

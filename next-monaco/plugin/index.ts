@@ -1,9 +1,16 @@
 import { NextConfig } from 'next'
 import { resolve } from 'node:path'
 import { readFile } from 'node:fs/promises'
+import { getTypeDeclaration } from './utils'
 
 /** Creates a Next.js plugin that configures Monaco Editor. */
-export function createMonacoPlugin({ theme }: { theme: string }) {
+export function createMonacoPlugin({
+  theme,
+  types,
+}: {
+  theme: string
+  types: string[]
+}) {
   return function withMonaco(nextConfig: NextConfig = {}) {
     const getWebpackConfig = nextConfig.webpack
 
@@ -28,11 +35,22 @@ export function createMonacoPlugin({ theme }: { theme: string }) {
         nextConfig.env = {}
       }
 
+      // Load Monaco themes
       nextConfig.env.MONACO_THEME = (
         await readFile(resolve(process.cwd(), theme), 'utf-8')
       )
         // replace single line comments with empty string
         .replace(/\/\/.*/g, '')
+
+      // Load library type declarations
+      const typesContents = await Promise.all(
+        types.map(async (type) => ({
+          code: await getTypeDeclaration(type),
+          path: `file:///node_modules/${type}/index.d.ts`,
+        }))
+      )
+
+      nextConfig.env.MONACO_TYPES = JSON.stringify(typesContents)
 
       return {
         transpilePackages: [
