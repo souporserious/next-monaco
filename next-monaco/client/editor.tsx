@@ -37,9 +37,10 @@ export default function Editor({
     : MIN_LINE_COUNT
 
   React.useLayoutEffect(() => {
+    const language = getLanguageFromFileExtension(name.split('.').pop())
     const model = monaco.editor.createModel(
       value,
-      getLanguageFromFileExtension(name.split('.').pop()),
+      language,
       monaco.Uri.file(name)
     )
     const editor = createConfiguredEditor(ref.current!, {
@@ -52,7 +53,7 @@ export default function Editor({
       automaticLayout: true,
       scrollBeyondLastLine: false,
       renderLineHighlightOnlyWhenFocus: true,
-      language: 'typescript',
+      guides: { indentation: false },
       contextmenu: false,
       formatOnPaste: true,
       formatOnType: true,

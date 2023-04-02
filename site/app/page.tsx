@@ -14,6 +14,35 @@ export default function App() {
 }
 `.trim()
 
+const plugin = `
+import { createMonacoPlugin } from 'next-monaco/plugin'
+
+const withMonaco = createMonacoPlugin({
+  theme: 'theme.json',
+  types: ['next-monaco'],
+})
+
+/** @type {import('next').NextConfig} */
+export default withMonaco({
+  experimental: {
+    appDir: true,
+  },
+})
+`.trim()
+
+const editor = `
+import { Editor } from 'next-monaco'
+
+export default function App() {
+  return (
+    <Editor
+      name="index.tsx"
+      value={\`import { React } from 'react'\`}
+    />
+  )
+}
+`.trim()
+
 export default function Page() {
   return (
     <div
@@ -81,16 +110,48 @@ export default function Page() {
       <div
         style={{
           display: 'grid',
-          gridAutoFlow: 'column',
-          gridAutoColumns: 'minmax(0, 1fr)',
+          gridTemplateColumns: 'repeat(3, minmax(0, 1fr))',
+          gridTemplateRows: 'repeat(2, minmax(0, 1fr))',
+          gap: '6rem',
           padding: '4rem',
           textAlign: 'center',
+          textTransform: 'uppercase',
+          fontWeight: 500,
+          fontSize: '0.75rem',
+          letterSpacing: '0.1em',
         }}
       >
         <h3>Server Component Ready</h3>
         <h3>TextMate Highlighting</h3>
         <h3>Type Acquisition</h3>
+        <h3>Preconfigured TypeScript</h3>
+        <h3>CSS Variables</h3>
+        <h3>Multi-Model</h3>
+        <h3>Lazy Loaded</h3>
         <h3>Marketplace Themes</h3>
+        <h3>Type Checking</h3>
+        <h3>Code Formatting</h3>
+      </div>
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: '1fr 1fr',
+          padding: '1rem',
+          gap: '1rem',
+        }}
+      >
+        <div
+          style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}
+        >
+          <h3 style={{ fontSize: '0.75rem' }}>plugin.ts</h3>
+          <Editor name="plugin.ts" value={plugin} />
+        </div>
+        <div
+          style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}
+        >
+          <h3 style={{ fontSize: '0.75rem' }}>editor.tsx</h3>
+          <Editor name="editor.tsx" value={editor} />
+        </div>
       </div>
     </div>
   )
