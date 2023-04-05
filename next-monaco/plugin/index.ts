@@ -1,7 +1,7 @@
 import { NextConfig } from 'next'
 import { resolve } from 'node:path'
 import { readFile } from 'node:fs/promises'
-import { getTypeDeclaration } from './utils'
+import { getTypeDeclarations } from './get-type-declarations'
 
 /** Creates a Next.js plugin that configures Monaco Editor. */
 export function createMonacoPlugin({
@@ -45,7 +45,7 @@ export function createMonacoPlugin({
       // Load library type declarations
       const typesContents = await Promise.all(
         types.map(async (type) => ({
-          code: await getTypeDeclaration(type),
+          code: await getTypeDeclarations(type),
           path: `file:///node_modules/${type}/index.d.ts`,
         }))
       )
