@@ -1,4 +1,4 @@
-/**
+/*
  * Note, the order of these imports are important.
  * Contributions must be loaded after the editor is initialized.
  */
@@ -21,15 +21,21 @@ typeDeclarations.forEach(({ code, path }) => {
 const MIN_LINE_COUNT = 1
 const LINE_HEIGHT = 20
 
-export default function Editor({
-  name,
-  value,
-  onMount,
-}: {
-  name: string
+export type EditorProps = {
+  fileName: string
   value: string
+  className?: string
+  style?: React.CSSProperties
   onMount?: () => void
-}) {
+}
+
+export default function Editor({
+  fileName,
+  value,
+  className,
+  style,
+  onMount,
+}: EditorProps) {
   const ref = React.useRef<HTMLDivElement>(null)
   const [opacity, setOpacity] = React.useState(0)
   const lineCount = value
@@ -37,11 +43,11 @@ export default function Editor({
     : MIN_LINE_COUNT
 
   React.useLayoutEffect(() => {
-    const language = getLanguageFromFileExtension(name.split('.').pop())
+    const language = getLanguageFromFileExtension(fileName.split('.').pop())
     const model = monaco.editor.createModel(
       value,
       language,
-      monaco.Uri.file(name)
+      monaco.Uri.file(fileName)
     )
     const editor = createConfiguredEditor(ref.current!, {
       model,
@@ -89,10 +95,12 @@ export default function Editor({
   return (
     <div
       ref={ref}
+      className={className}
       style={{
         gridArea: '1 / 1',
         height: lineCount * LINE_HEIGHT,
         opacity,
+        ...style,
       }}
     />
   )

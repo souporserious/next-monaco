@@ -7,7 +7,7 @@ import { Editor } from 'next-monaco'
 export default function App() {
   return (
     <Editor
-      name="index.tsx"
+      fileName="index.tsx"
       value={\`import { React } from 'react'\`}
     />
   )
@@ -22,7 +22,6 @@ const withMonaco = createMonacoPlugin({
   types: ['next-monaco'],
 })
 
-/** @type {import('next').NextConfig} */
 export default withMonaco({
   experimental: {
     appDir: true,
@@ -36,7 +35,7 @@ import { Editor } from 'next-monaco'
 export default function App() {
   return (
     <Editor
-      name="index.tsx"
+      fileName="index.tsx"
       value={\`import { React } from 'react'\`}
     />
   )
@@ -105,7 +104,7 @@ export default function Page() {
           </div>
           <code>npm install next-monaco</code>
         </div>
-        <Editor name="index.tsx" value={defaultValue} />
+        <Editor fileName="index.tsx" value={defaultValue} />
       </div>
       <div
         style={{
@@ -144,13 +143,13 @@ export default function Page() {
           style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}
         >
           <h3 style={{ fontSize: '0.75rem' }}>plugin.ts</h3>
-          <Editor name="plugin.ts" value={plugin} />
+          <Editor fileName="plugin.ts" value={plugin} style={{ flex: 1 }} />
         </div>
         <div
           style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}
         >
           <h3 style={{ fontSize: '0.75rem' }}>editor.tsx</h3>
-          <Editor name="editor.tsx" value={editor} />
+          <Editor fileName="editor.tsx" value={editor} style={{ flex: 1 }} />
         </div>
       </div>
     </div>
