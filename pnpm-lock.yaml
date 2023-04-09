@@ -21,7 +21,6 @@ importers:
   next-monaco:
     specifiers:
       '@code-hike/lighter': ^0.6.4
-      '@preact/signals-core': ^1.2.3
       '@typescript/ata': ^0.9.3
       monaco-editor: ^0.34.1
       monaco-editor-webpack-plugin: ^7.0.1
@@ -39,7 +38,6 @@ importers:
       webpack: latest
     dependencies:
       '@code-hike/lighter': 0.6.4
-      '@preact/signals-core': 1.2.3
       '@typescript/ata': 0.9.3_typescript@4.9.5
       monaco-editor: 0.34.1
       monaco-editor-webpack-plugin: 7.0.1_xxgxza5bho24cnv4slm56ls2p4
@@ -530,10 +528,6 @@ packages:
     dependencies:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.15.0
-    dev: false
-
-  /@preact/signals-core/1.2.3:
-    resolution: {integrity: sha512-Kui4p7PMcEQevBgsTO0JBo3gyQ88Q3qzEvsVCuSp11t0JcN4DmGCTJcGRVSCq7Bn7lGxJBO+57jNSzDoDJ+QmA==}
     dev: false
 
   /@swc/helpers/0.4.14:
