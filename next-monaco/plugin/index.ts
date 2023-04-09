@@ -44,13 +44,10 @@ export function createMonacoPlugin({
 
       // Load library type declarations
       const typesContents = await Promise.all(
-        types.map(async (type) => ({
-          code: await getTypeDeclarations(type),
-          path: `file:///node_modules/${type}/index.d.ts`,
-        }))
+        types.flatMap(getTypeDeclarations)
       )
 
-      nextConfig.env.MONACO_TYPES = JSON.stringify(typesContents)
+      nextConfig.env.MONACO_TYPES = JSON.stringify(typesContents.flat())
 
       return {
         transpilePackages: [

@@ -5,11 +5,11 @@
     "build": "turbo build"
   },
   "dependencies": {
-    "@types/node": "^18.15.8",
-    "@types/react": "^18.0.29",
+    "@types/node": "^18.15.11",
+    "@types/react": "^18.0.33",
     "@types/react-dom": "^18.0.11",
-    "turbo": "^1.8.5",
+    "turbo": "^1.8.8",
     "tsup": "^6.7.0",
-    "typescript": "^5.0.2"
+    "typescript": "^4.9.5"
   }
 }

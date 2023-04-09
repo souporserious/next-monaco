@@ -6,7 +6,7 @@
     "build": "next build"
   },
   "dependencies": {
-    "next": "latest",
+    "next": "canary",
     "next-monaco": "workspace:*",
     "react": "latest",
     "react-dom": "latest"

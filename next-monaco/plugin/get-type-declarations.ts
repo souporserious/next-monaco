@@ -1,8 +1,47 @@
 import fs from 'node:fs/promises'
 import path from 'node:path'
+import { builtinModules } from 'node:module'
 import { rollup } from 'rollup'
 import dts from 'rollup-plugin-dts'
-import { builtinModules } from 'module'
+import { setupTypeAcquisition } from '@typescript/ata'
+import ts from 'typescript'
+
+/* TODO: this is inefficient, the ata utility should be instantiated only once. */
+const fetchTypes = (
+  name: string[]
+): Promise<{ code: string; path: string }[]> => {
+  let types: { code: string; path: string }[] = []
+
+  return new Promise((resolve) => {
+    const ata = setupTypeAcquisition({
+      projectName: 'next-monaco',
+      typescript: ts,
+      logger: console,
+      delegate: {
+        receivedFile: (code: string, path: string) => {
+          types = [...types, { code, path }]
+        },
+        errorMessage(userFacingMessage, error) {
+          throw new Error(userFacingMessage, { cause: error })
+        },
+        finished: () => {
+          resolve(
+            types.map(({ code, path }) => ({
+              code,
+              path: `file://${path.replace('@types/', '')}`,
+            }))
+          )
+        },
+      },
+    })
+
+    /*
+     * ATA expects a list of imports from a source file to fetch types for,
+     * so we simply provide a list of imports for each package.
+     */
+    ata(name.map((name) => `import ${name} from "${name}"`).join('\n'))
+  })
+}
 
 async function getPackageJson(packagePath) {
   const packageJsonContent = await fs.readFile(packagePath, 'utf-8')
@@ -23,9 +62,11 @@ async function findTypesPathFromTypeVersions(
   if (!packageJson.typesVersions) return null
 
   const typeVersionsField = packageJson.typesVersions['*']
+
   if (!typeVersionsField) return null
 
   const typesPathsFromTypeVersions = typeVersionsField[submodule]
+
   if (!typesPathsFromTypeVersions) return null
 
   for (const candidatePath of typesPathsFromTypeVersions) {
@@ -47,8 +88,22 @@ async function findTypesPathFromTypeVersions(
   return null
 }
 
+async function findParentNodeModulesPath(currentPath, packageName) {
+  const nodeModulesPath = path.resolve(currentPath, 'node_modules', packageName)
+
+  try {
+    await fs.access(nodeModulesPath)
+    return nodeModulesPath
+  } catch {
+    const parentPath = path.dirname(currentPath)
+    if (parentPath === currentPath) return null // We have reached the root directory
+    return findParentNodeModulesPath(parentPath, packageName)
+  }
+}
+
 async function findTypesPath(packageJson, parentPackage, submodule) {
   const typesField = packageJson.types || packageJson.typings
+
   if (!submodule && typesField) {
     return path.resolve(
       process.cwd(),
@@ -67,12 +122,14 @@ async function findTypesPath(packageJson, parentPackage, submodule) {
     if (typesPath) return typesPath
   }
 
-  return path.resolve(
+  const parentNodeModulesPath = await findParentNodeModulesPath(
     process.cwd(),
-    'node_modules',
-    `@types/${parentPackage}`,
-    'index.d.ts'
+    `@types/${parentPackage}`
   )
+
+  if (!parentNodeModulesPath) return null
+
+  return path.resolve(parentNodeModulesPath, 'index.d.ts')
 }
 
 /** Fetches the types for a locally installed NPM package. */
@@ -94,18 +151,34 @@ export async function getTypeDeclarations(packageName) {
   try {
     const packageJson = await getPackageJson(parentPackagePath)
     const allDependencies = getAllDependencies(packageJson)
-
     const typesPath = await findTypesPath(packageJson, parentPackage, submodule)
+
+    // use ATA when dealing with @types since rollup is not reliable
+    if (typesPath.includes('@types/')) {
+      const packageTypes = await fetchTypes([packageName])
+      return packageTypes
+    }
 
     try {
       const bundle = await rollup({
         input: path.resolve('./node_modules/', packageName, typesPath),
         plugins: [dts({ respectExternal: true })],
-        external: (id) => allDependencies.concat(builtinModules).includes(id),
+        external: (id) =>
+          allDependencies
+            .concat(
+              builtinModules,
+              builtinModules.map((moduleName) => `node:${moduleName}`)
+            )
+            .includes(id),
       })
       const result = await bundle.generate({})
 
-      return result.output[0].code
+      return [
+        {
+          code: result.output[0].code,
+          path: `file:///node_modules/${packageName}/index.d.ts`,
+        },
+      ]
     } catch (error) {
       console.error(
         `next-monaco: Could not find types for "${packageName}"`,
@@ -119,5 +192,5 @@ export async function getTypeDeclarations(packageName) {
     )
   }
 
-  return ''
+  return []
 }
