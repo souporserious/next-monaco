@@ -15,7 +15,6 @@ monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
 const typeDeclarations = JSON.parse(process.env.MONACO_TYPES)
 
 typeDeclarations.forEach(({ code, path }) => {
-  console.log({ code, path })
   monaco.languages.typescript.typescriptDefaults.addExtraLib(code, path)
 })
 
