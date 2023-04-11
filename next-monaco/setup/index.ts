@@ -96,6 +96,11 @@ setLanguages([
     extensions: ['.ts', '.tsx'],
     aliases: ['TypeScript', 'ts', 'typescript'],
   },
+  {
+    id: 'css',
+    extensions: ['.css'],
+    aliases: ['CSS', 'css'],
+  },
 ])
 
 setGrammars(
@@ -110,6 +115,11 @@ setGrammars(
       scopeName: 'source.tsx',
       path: './TypescriptReact.tmLanguage.json',
     },
+    {
+      language: 'css',
+      scopeName: 'source.css',
+      path: './css.tmLanguage.json',
+    },
   ],
   async (grammar) => {
     switch (grammar.scopeName) {
@@ -120,6 +130,10 @@ setGrammars(
       case 'source.tsx':
         return JSON.stringify(
           (await import('./TypeScriptReact.tmLanguage.json')).default as any
+        )
+      case 'source.css':
+        return JSON.stringify(
+          (await import('./css.tmLanguage.json')).default as any
         )
     }
     throw new Error(`Grammar not found for: ${grammar.language}`)
