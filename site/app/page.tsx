@@ -1,18 +1,6 @@
+import fs from 'node:fs/promises'
 import { Editor } from 'next-monaco'
 import './app.css'
-
-const defaultValue = `
-import { Editor } from 'next-monaco'
-
-export default function App() {
-  return (
-    <Editor
-      fileName="index.tsx"
-      value={\`import { React } from 'react'\`}
-    />
-  )
-}
-`.trim()
 
 const plugin = `
 import { createMonacoPlugin } from 'next-monaco/plugin'
@@ -42,7 +30,20 @@ export default function App() {
 }
 `.trim()
 
-export default function Page() {
+export default async function Page() {
+  const exampleFiles = await Promise.all(
+    (
+      await fs.readdir('app/example')
+    ).map(async (fileName) => {
+      const contents = await fs.readFile(`app/example/${fileName}`, 'utf8')
+
+      return {
+        fileName,
+        contents,
+      }
+    })
+  )
+
   return (
     <div
       style={{
@@ -104,7 +105,12 @@ export default function Page() {
           </div>
           <code>npm install next-monaco</code>
         </div>
-        <Editor fileName="index.tsx" value={defaultValue} />
+
+        <div style={{ display: 'grid', gap: '1rem' }}>
+          {exampleFiles.map(({ fileName, contents }) => (
+            <Editor key={fileName} fileName={fileName} value={contents} />
+          ))}
+        </div>
       </div>
       <div
         style={{
@@ -128,7 +134,6 @@ export default function Page() {
         <h3>Multi-Model</h3>
         <h3>Lazy Loaded</h3>
         <h3>Marketplace Themes</h3>
-        <h3>Type Checking</h3>
         <h3>Code Formatting</h3>
       </div>
       <div
