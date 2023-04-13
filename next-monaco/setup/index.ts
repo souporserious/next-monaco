@@ -1,18 +1,12 @@
 import 'monaco-editor/esm/vs/editor/editor.all'
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api'
 import { StandaloneServices } from 'vscode/services'
+import { registerExtension } from 'vscode/extensions'
 import getDialogsServiceOverride from 'vscode/service-override/dialogs'
 import getConfigurationServiceOverride from 'vscode/service-override/configuration'
-import getTextmateServiceOverride, {
-  setGrammars,
-} from 'vscode/service-override/textmate'
-import getThemeServiceOverride, {
-  setDefaultThemes,
-  IThemeExtensionPoint,
-} from 'vscode/service-override/theme'
-import getLanguagesServiceOverride, {
-  setLanguages,
-} from 'vscode/service-override/languages'
+import getTextmateServiceOverride from 'vscode/service-override/textmate'
+import getThemeServiceOverride from 'vscode/service-override/theme'
+import getLanguagesServiceOverride from 'vscode/service-override/languages'
 
 window.MonacoEnvironment = {
   getWorker: async function (moduleId, label) {
@@ -63,79 +57,93 @@ window.MonacoEnvironment = {
 StandaloneServices.initialize({
   ...getDialogsServiceOverride(),
   ...getConfigurationServiceOverride(),
-  ...getTextmateServiceOverride(async () => {
-    // @ts-expect-error
-    const onigFile = await import('vscode-oniguruma/release/onig.wasm')
-    const response = await fetch(onigFile.default)
-    return await response.arrayBuffer()
-  }),
+  ...getTextmateServiceOverride(),
   ...getThemeServiceOverride(),
   ...getLanguagesServiceOverride(),
 })
 
-const loader: Partial<Record<string, () => Promise<string>>> = {
-  '/next-monaco.json': async () => process.env.MONACO_THEME,
+const defaultThemesExtensions = {
+  name: 'themes',
+  publisher: 'next-monaco',
+  version: '0.0.0',
+  engines: {
+    vscode: '*',
+  },
+  contributes: {
+    themes: [
+      {
+        id: 'Next Monaco',
+        label: 'Next Monaco',
+        uiTheme: 'vs-dark',
+        path: './next-monaco.json',
+      },
+    ],
+  },
 }
 
-const themes = [
-  {
-    id: 'Next Monaco',
-    label: 'Next Monaco',
-    uiTheme: 'vs-dark',
-    path: './next-monaco.json',
-  },
-] as IThemeExtensionPoint[]
+const { registerFile: registerDefaultThemeExtensionFile } = registerExtension(
+  defaultThemesExtensions
+)
 
-setDefaultThemes(themes, async (theme) => loader[theme.path.slice(1)]!())
+registerDefaultThemeExtensionFile(
+  './next-monaco.json',
+  async () => process.env.MONACO_THEME
+)
 
 monaco.editor.setTheme('Next Monaco')
 
-setLanguages([
-  {
-    id: 'typescript',
-    extensions: ['.ts', '.tsx'],
-    aliases: ['TypeScript', 'ts', 'typescript'],
+const extension = {
+  name: 'grammars',
+  publisher: 'next-monaco',
+  version: '0.0.0',
+  engines: {
+    vscode: '*',
   },
-  {
-    id: 'css',
-    extensions: ['.css'],
-    aliases: ['CSS', 'css'],
+  contributes: {
+    languages: [
+      {
+        id: 'css',
+        extensions: ['.css'],
+        aliases: ['CSS', 'css'],
+      },
+      {
+        id: 'typescript',
+        extensions: ['.ts', '.tsx'],
+        aliases: ['TypeScript', 'ts', 'typescript'],
+      },
+    ],
+    grammars: [
+      {
+        language: 'css',
+        scopeName: 'source.css',
+        path: './css.tmLanguage.json',
+      },
+      {
+        language: 'typescript',
+        scopeName: 'source.ts',
+        path: './TypeScript.tmLanguage.json',
+      },
+      {
+        language: 'typescript',
+        scopeName: 'source.tsx',
+        path: './TypeScriptReact.tmLanguage.json',
+      },
+    ],
   },
-])
+}
 
-setGrammars(
-  [
-    {
-      language: 'typescript',
-      scopeName: 'source.ts',
-      path: './Typescript.tmLanguage.json',
-    },
-    {
-      language: 'typescript',
-      scopeName: 'source.tsx',
-      path: './TypescriptReact.tmLanguage.json',
-    },
-    {
-      language: 'css',
-      scopeName: 'source.css',
-      path: './css.tmLanguage.json',
-    },
-  ],
-  async (grammar) => {
-    switch (grammar.scopeName) {
-      case 'source.ts':
-        return JSON.stringify(
-          (await import('./TypeScript.tmLanguage.json')).default as any
-        )
-      case 'source.tsx':
-        return JSON.stringify(
-          (await import('./TypeScriptReact.tmLanguage.json')).default as any
-        )
-      case 'source.css':
-        return JSON.stringify(
-          (await import('./css.tmLanguage.json')).default as any
-        )
-    }
-    throw new Error(`Grammar not found for: ${grammar.language}`)
-  }
+const { registerFile: registerExtensionFile } = registerExtension(extension)
+
+registerExtensionFile('./css.tmLanguage.json', async () =>
+  JSON.stringify((await import('./css.tmLanguage.json')).default as any)
+)
+
+registerExtensionFile('./TypeScript.tmLanguage.json', async () =>
+  JSON.stringify((await import('./TypeScript.tmLanguage.json')).default as any)
+)
+
+registerExtensionFile('./TypeScriptReact.tmLanguage.json', async () =>
+  JSON.stringify(
+    (await import('./TypeScriptReact.tmLanguage.json')).default as any
+  )
 )

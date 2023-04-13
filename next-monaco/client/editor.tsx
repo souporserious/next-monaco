@@ -5,6 +5,7 @@
 import '../setup'
 import { createConfiguredEditor } from 'vscode/monaco'
 import * as React from 'react'
+import * as vscode from 'vscode'
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api'
 import 'monaco-editor/esm/vs/language/typescript/monaco.contribution'
 
@@ -12,10 +13,22 @@ monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
   jsx: monaco.languages.typescript.JsxEmit.Preserve,
 })
 
+/*
+ * Temporarily need to initialize vscode api to load extensions until bug is fixed
+ * https://github.com/CodinGame/monaco-vscode-api/issues/80#issuecomment-1502762849
+ */
+vscode.languages.registerColorProvider('javascript', {
+  provideColorPresentations() {
+    return []
+  },
+  provideDocumentColors(): vscode.ProviderResult<vscode.ColorInformation[]> {
+    return []
+  },
+})
+
 const typeDeclarations = JSON.parse(process.env.MONACO_TYPES)
 
 typeDeclarations.forEach(({ code, path }) => {
-  console.log({ code, path })
   monaco.languages.typescript.typescriptDefaults.addExtraLib(code, path)
 })
 
