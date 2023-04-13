@@ -63,13 +63,9 @@ StandaloneServices.initialize({
 })
 
 const defaultThemesExtensions = {
-  name: 'theme-defaults',
-  displayName: '%displayName%',
-  description: '%description%',
-  categories: ['Themes'],
-  version: '1.0.0',
-  publisher: 'vscode',
-  license: 'MIT',
+  name: 'themes',
+  publisher: 'next-monaco',
+  version: '0.0.0',
   engines: {
     vscode: '*',
   },
@@ -83,32 +79,33 @@ const defaultThemesExtensions = {
       },
     ],
   },
-  repository: {
-    type: 'git',
-    url: 'https://github.com/microsoft/vscode.git',
-  },
 }
 
 const { registerFile: registerDefaultThemeExtensionFile } = registerExtension(
   defaultThemesExtensions
 )
 
-registerDefaultThemeExtensionFile('./next-monaco.json', async () => {
-  console.log('register default theme')
-  return process.env.MONACO_THEME
-})
+registerDefaultThemeExtensionFile(
+  './next-monaco.json',
+  async () => process.env.MONACO_THEME
+)
 
 monaco.editor.setTheme('Next Monaco')
 
 const extension = {
-  name: 'test',
+  name: 'grammars',
   publisher: 'next-monaco',
-  version: '1.0.0',
+  version: '0.0.0',
   engines: {
     vscode: '*',
   },
   contributes: {
     languages: [
+      {
+        id: 'css',
+        extensions: ['.css'],
+        aliases: ['CSS', 'css'],
+      },
       {
         id: 'typescript',
         extensions: ['.ts', '.tsx'],
@@ -117,14 +114,19 @@ const extension = {
     ],
     grammars: [
       {
+        language: 'css',
+        scopeName: 'source.css',
+        path: './css.tmLanguage.json',
+      },
+      {
         language: 'typescript',
         scopeName: 'source.ts',
-        path: './Typescript.tmLanguage.json',
+        path: './TypeScript.tmLanguage.json',
       },
       {
         language: 'typescript',
         scopeName: 'source.tsx',
-        path: './TypescriptReact.tmLanguage.json',
+        path: './TypeScriptReact.tmLanguage.json',
       },
     ],
   },
@@ -132,16 +134,16 @@ const extension = {
 
 const { registerFile: registerExtensionFile } = registerExtension(extension)
 
-registerExtensionFile('./Typescript.tmLanguage.json', async () => {
-  console.log('load typescript grammar')
-  return JSON.stringify(
-    (await import('./TypeScript.tmLanguage.json')).default as any
-  )
-})
+registerExtensionFile('./css.tmLanguage.json', async () =>
+  JSON.stringify((await import('./css.tmLanguage.json')).default as any)
+)
 
-registerExtensionFile('./TypescriptReact.tmLanguage.json', async () => {
-  console.log('load typescript react grammar')
-  return JSON.stringify(
-    (await import('./TypescriptReact.tmLanguage.json')).default as any
+registerExtensionFile('./TypeScript.tmLanguage.json', async () =>
+  JSON.stringify((await import('./TypeScript.tmLanguage.json')).default as any)
+)
+
+registerExtensionFile('./TypeScriptReact.tmLanguage.json', async () =>
+  JSON.stringify(
+    (await import('./TypeScriptReact.tmLanguage.json')).default as any
   )
-})
+)
