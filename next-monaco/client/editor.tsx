@@ -26,7 +26,7 @@ vscode.languages.registerColorProvider('javascript', {
   },
 })
 
-fetch('/_next/static/types.json').then(async (response) => {
+fetch('/_next/static/next-monaco/types.json').then(async (response) => {
   const typeDeclarations = await response.json()
 
   typeDeclarations.forEach(({ code, path }) => {

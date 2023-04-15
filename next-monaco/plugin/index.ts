@@ -1,7 +1,7 @@
 import { NextConfig } from 'next'
 import { resolve, join } from 'node:path'
 import { tmpdir } from 'node:os'
-import { readFile, writeFile } from 'node:fs/promises'
+import { writeFile } from 'node:fs/promises'
 import CopyPlugin from 'copy-webpack-plugin'
 import { getTypeDeclarations } from './get-type-declarations'
 
@@ -61,12 +61,7 @@ export function createMonacoPlugin({
         nextConfig.env = {}
       }
 
-      // Load Monaco themes
-      nextConfig.env.MONACO_THEME = (
-        await readFile(resolve(process.cwd(), theme), 'utf-8')
-      )
-        // replace single line comments with empty string
-        .replace(/\/\/.*/g, '')
+      nextConfig.env.MONACO_THEME_PATH = resolve(process.cwd(), theme)
 
       return {
         transpilePackages: [

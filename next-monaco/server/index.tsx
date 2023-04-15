@@ -1,14 +1,15 @@
 import * as React from 'react'
-import { highlightWithScopes } from '@code-hike/lighter'
+import { readFile } from 'node:fs/promises'
+import { highlight } from '@code-hike/lighter'
 import { ClientEditor } from '../client'
 import type { EditorProps } from '../client/editor'
 import 'server-only'
 
 async function AsyncEditor(props: EditorProps) {
-  const { lines } = await highlightWithScopes(
+  const { lines } = await highlight(
     props.value,
     props.fileName.split('.').pop(),
-    JSON.parse(process.env.MONACO_THEME)
+    JSON.parse(await readFile(process.env.MONACO_THEME_PATH, 'utf-8'))
   )
 
   return (
