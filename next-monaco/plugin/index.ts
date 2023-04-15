@@ -17,9 +17,9 @@ export function createMonacoPlugin({
     const getWebpackConfig = nextConfig.webpack
 
     return async () => {
-      const typesContents = await Promise.all(
-        types.flatMap(getTypeDeclarations)
-      )
+      const typesContents = (
+        await Promise.all(types.flatMap(getTypeDeclarations))
+      ).flat()
       const typesFilePath = join(tmpdir(), 'types.json')
 
       await writeFile(typesFilePath, JSON.stringify(typesContents))
@@ -39,7 +39,11 @@ export function createMonacoPlugin({
               patterns: [
                 {
                   from: typesFilePath,
-                  to: resolve(process.cwd(), 'public/types.json'),
+                  to: 'static/next-monaco/types.json',
+                },
+                {
+                  from: resolve(process.cwd(), theme),
+                  to: 'static/next-monaco/theme.json',
                 },
               ],
             })
