@@ -24,7 +24,7 @@ importers:
       '@types/vscode': ^1.77.0
       '@typescript/ata': ^0.9.3
       copy-webpack-plugin: ^11.0.0
-      monaco-editor: ^0.36.1
+      monaco-editor: ^0.37.1
       next: latest
       node-fetch: ^3.3.1
       react: latest
@@ -33,23 +33,25 @@ importers:
       rollup-plugin-dts: ^5.3.0
       server-only: ^0.0.1
       typescript: ^4.9.5
-      vscode: npm:@codingame/monaco-vscode-api@1.76.9
+      vscode: npm:@codingame/monaco-vscode-api@1.78.0
       vscode-oniguruma: ^1.7.0
       vscode-textmate: ^9.0.0
       webpack: latest
+      yauzl: ^2.10.0
     dependencies:
       '@code-hike/lighter': 0.6.4
       '@typescript/ata': 0.9.3_typescript@4.9.5
       copy-webpack-plugin: 11.0.0_webpack@5.79.0
-      monaco-editor: 0.36.1
+      monaco-editor: 0.37.1
       node-fetch: 3.3.1
       rollup: 3.20.2
       rollup-plugin-dts: 5.3.0_e7tciabaay7z2i5ycjdzz3zl6i
       server-only: 0.0.1
       typescript: 4.9.5
-      vscode: /@codingame/monaco-vscode-api/1.76.9_ipbnjyeyuvuledotu57dnke5ia
+      vscode: /@codingame/monaco-vscode-api/1.78.0_ckavmeqbicipgquaigwjxgfku4
       vscode-oniguruma: 1.7.0
       vscode-textmate: 9.0.0
+      yauzl: 2.10.0
     devDependencies:
       '@types/vscode': 1.77.0
       next: 13.3.0_biqbaboplfbrettd7655fr4n2y
@@ -100,16 +102,19 @@ packages:
     resolution: {integrity: sha512-RGH/15WnFecNSPUxMVmbql0py25ijrhQlMtqkOSIgVZtmHxh00DkqImx65uL3dADFIzOa0RkN3ObUJWAppOgJQ==}
     dev: false
 
-  /@codingame/monaco-vscode-api/1.76.9_ipbnjyeyuvuledotu57dnke5ia:
-    resolution: {integrity: sha512-CF/9Ay6qJa0jrftxD1o+HBEy0gMVECN5P7oz3XPeX20Eg22OdI1TUvN/0iZ9ZMOWvkAoRWFBUHUrqdAYzj7oVw==}
+  /@codingame/monaco-vscode-api/1.78.0_ckavmeqbicipgquaigwjxgfku4:
+    resolution: {integrity: sha512-mV+ImrH1EdgwkujoYNCnqtZijZA7c1vxXl/Y6OwV1Mo8fZ4fUhMTiiO+0zaQZqLzM5GX/l7qfxNVOLV2pUJtmg==}
     peerDependencies:
-      monaco-editor: ~0.36.1
+      monaco-editor: ~0.37.1
       vscode-oniguruma: ^1.7.0
       vscode-textmate: ^9.0.0
+      yauzl: ^2.10.0
     dependencies:
-      monaco-editor: 0.36.1
+      '@types/node': 18.15.11
+      monaco-editor: 0.37.1
       vscode-oniguruma: 1.7.0
       vscode-textmate: 9.0.0
+      yauzl: 2.10.0
     dev: false
 
   /@esbuild/android-arm/0.17.12:
@@ -801,6 +806,10 @@ packages:
       node-releases: 2.0.10
       update-browserslist-db: 1.0.10_browserslist@4.21.5
 
+  /buffer-crc32/0.2.13:
+    resolution: {integrity: sha512-VO9Ht/+p3SN7SKWqcrgEzjGbRSJYTx+Q1pTQC0wrWqHx0vpJraQ6GtHx8tvcg1rlK1byhU5gccxgOgj7B0TDkQ==}
+    dev: false
+
   /buffer-from/1.1.2:
     resolution: {integrity: sha512-E+XQCRwSbaaiChtv6k6Dwgc+bx+Bs6vuKJHHl5kox/BaKbhiXzqQOwK4cO22yElGp2OCmjwVhT3HmxgyPGnJfQ==}
 
@@ -1050,6 +1059,12 @@ packages:
     resolution: {integrity: sha512-wBrocU2LCXXa+lWBt8RoIRD89Fi8OdABODa/kEnyeyjS5aZO5/GNvI5sEINADqP/h8M29UHTHUb53sUu5Ihqdw==}
     dependencies:
       reusify: 1.0.4
+    dev: false
+
+  /fd-slicer/1.1.0:
+    resolution: {integrity: sha512-cE1qsB/VwyQozZ+q1dGxR8LBYNZeofhEdUNGSMbQD3Gw2lAzX9Zb3uIU6Ebc/Fmyjo9AWWfnn0AUCHqtevs/8g==}
+    dependencies:
+      pend: 1.2.0
     dev: false
 
   /fetch-blob/3.2.0:
@@ -1307,8 +1322,8 @@ packages:
       brace-expansion: 1.1.11
     dev: false
 
-  /monaco-editor/0.36.1:
-    resolution: {integrity: sha512-/CaclMHKQ3A6rnzBzOADfwdSJ25BFoFT0Emxsc4zYVyav5SkK9iA6lEtIeuN/oRYbwPgviJT+t3l+sjFa28jYg==}
+  /monaco-editor/0.37.1:
+    resolution: {integrity: sha512-jLXEEYSbqMkT/FuJLBZAVWGuhIb4JNwHE9kPTorAVmsdZ4UzHAfgWxLsVtD7pLRFaOwYPhNG9nUCpmFL1t/dIg==}
     dev: false
 
   /ms/2.1.2:
@@ -1479,6 +1494,10 @@ packages:
   /path-type/4.0.0:
     resolution: {integrity: sha512-gDKb8aZMDeD/tZWs9P6+q0J9Mwkdl6xMV8TjnGP3qJVJ06bdMgkbBlLU8IdfOsIsFz2BW1rNVT3XuNEl8zPAvw==}
     engines: {node: '>=8'}
+    dev: false
+
+  /pend/1.2.0:
+    resolution: {integrity: sha512-F3asv42UuXchdzt+xXqfW1OGlVBe+mxa2mqI0pg5yAHZPvFmY3Y6drSf/GQ1A86WgWEN9Kzh/WrgKa6iGcHXLg==}
     dev: false
 
   /picocolors/1.0.0:
@@ -2021,4 +2040,11 @@ packages:
   /yaml/1.10.2:
     resolution: {integrity: sha512-r3vXyErRCYJ7wg28yvBY5VSoAF8ZvlcW9/BwUzEtUsjvX/DKs24dIkuwjtuprwJJHsbyUbLApepYTR1BN4uHrg==}
     engines: {node: '>= 6'}
+    dev: false
+
+  /yauzl/2.10.0:
+    resolution: {integrity: sha512-p4a9I6X6nu6IhoGmBqAcbJy1mlC4j27vEPZX9F4L4/vZT3Lyq1VkFHw/V/PUcB9Buo+DG3iHkT0x3Qya58zc3g==}
+    dependencies:
+      buffer-crc32: 0.2.13
+      fd-slicer: 1.1.0
     dev: false

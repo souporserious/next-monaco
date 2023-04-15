@@ -1,7 +1,10 @@
 import 'monaco-editor/esm/vs/editor/editor.all'
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api'
-import { StandaloneServices } from 'vscode/services'
-import { registerExtension } from 'vscode/extensions'
+import { initialize as initializeMonacoService } from 'vscode/services'
+import {
+  registerExtension,
+  initialize as initializeVscodeExtensions,
+} from 'vscode/extensions'
 import getDialogsServiceOverride from 'vscode/service-override/dialogs'
 import getConfigurationServiceOverride from 'vscode/service-override/configuration'
 import getTextmateServiceOverride from 'vscode/service-override/textmate'
@@ -54,13 +57,15 @@ window.MonacoEnvironment = {
   },
 }
 
-StandaloneServices.initialize({
+await initializeMonacoService({
   ...getDialogsServiceOverride(),
-  ...getConfigurationServiceOverride(),
+  ...getConfigurationServiceOverride(monaco.Uri.file('/')),
   ...getTextmateServiceOverride(),
   ...getThemeServiceOverride(),
   ...getLanguagesServiceOverride(),
 })
+
+await initializeVscodeExtensions()
 
 const defaultThemesExtensions = {
   name: 'themes',
