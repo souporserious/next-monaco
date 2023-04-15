@@ -42,6 +42,7 @@
   "dependencies": {
     "@code-hike/lighter": "^0.6.4",
     "@typescript/ata": "^0.9.3",
+    "copy-webpack-plugin": "^11.0.0",
     "monaco-editor": "^0.36.1",
     "node-fetch": "^3.3.1",
     "rollup": "^3.20.2",
@@ -50,6 +51,6 @@
     "typescript": "^4.9.5",
     "vscode-oniguruma": "^1.7.0",
     "vscode-textmate": "^9.0.0",
-    "vscode": "npm:@codingame/monaco-vscode-api@^1.76.9"
+    "vscode": "npm:@codingame/monaco-vscode-api@1.76.9"
   }
 }

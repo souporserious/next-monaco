@@ -26,10 +26,12 @@ vscode.languages.registerColorProvider('javascript', {
   },
 })
 
-const typeDeclarations = JSON.parse(process.env.MONACO_TYPES)
+fetch('/_next/static/next-monaco/types.json').then(async (response) => {
+  const typeDeclarations = await response.json()
 
-typeDeclarations.forEach(({ code, path }) => {
-  monaco.languages.typescript.typescriptDefaults.addExtraLib(code, path)
+  typeDeclarations.forEach(({ code, path }) => {
+    monaco.languages.typescript.typescriptDefaults.addExtraLib(code, path)
+  })
 })
 
 const MIN_LINE_COUNT = 1

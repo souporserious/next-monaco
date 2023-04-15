@@ -85,9 +85,8 @@ const { registerFile: registerDefaultThemeExtensionFile } = registerExtension(
   defaultThemesExtensions
 )
 
-registerDefaultThemeExtensionFile(
-  './next-monaco.json',
-  async () => process.env.MONACO_THEME
+registerDefaultThemeExtensionFile('./next-monaco.json', async () =>
+  (await fetch('/_next/static/next-monaco/theme.json')).text()
 )
 
 monaco.editor.setTheme('Next Monaco')
