@@ -1,6 +1,11 @@
 import 'monaco-editor/esm/vs/editor/editor.all'
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api'
-import { initialize as initializeMonacoService } from 'vscode/services'
+import { ILogService } from 'monaco-editor/esm/vs/platform/log/common/log'
+import * as vscode from 'vscode'
+import {
+  initialize as initializeMonacoService,
+  StandaloneServices,
+} from 'vscode/services'
 import {
   registerExtension,
   initialize as initializeVscodeExtensions,
@@ -56,6 +61,11 @@ window.MonacoEnvironment = {
     }
   },
 }
+
+/* Only show warnings and errors in the console. */
+StandaloneServices.get<{ setLevel: any }>(ILogService).setLevel(
+  vscode.LogLevel.Warning
+)
 
 initializeMonacoService({
   ...getDialogsServiceOverride(),
