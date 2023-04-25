@@ -23,7 +23,7 @@
     }
   },
   "scripts": {
-    "build": "tsup plugin/index.ts setup/index.ts client/index.tsx server/index.tsx --dts --format esm",
+    "build": "tsup plugin/index.ts setup/index.ts client/index.tsx server/index.ts --dts --format esm",
     "dev": "pnpm build --watch",
     "test": "jest"
   },
