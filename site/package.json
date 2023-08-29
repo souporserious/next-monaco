@@ -6,9 +6,9 @@
     "build": "next build"
   },
   "dependencies": {
-    "next": "canary",
+    "next": "13.4.19",
     "next-monaco": "workspace:*",
-    "react": "latest",
-    "react-dom": "latest"
+    "react": "18.2.0",
+    "react-dom": "18.2.0"
   }
 }
