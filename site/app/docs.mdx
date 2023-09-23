@@ -1,0 +1,62 @@
+## Install
+
+```bash
+pnpm install nextide
+```
+
+## Configure
+
+Start by adding the plugin to your Next.js config file in the root of your project:
+
+```mjs filename="next.config.mjs"
+import { createMonacoPlugin } from 'next-monaco/plugin'
+
+const withMonaco = createMonacoPlugin({
+  theme: 'theme.json',
+  types: ['next-monaco'],
+})
+
+export default withMonaco()
+```
+
+This allows you to define a custom theme and define which package type declarations to load.
+
+## Components
+
+Nextide ships with a set of components that can be used to highlight code as well as provide a live code editor.
+
+### Code
+
+Add syntax highlighting for over 150 languages powered by [shiki](https://github.com/shikijs/shiki/tree/main).
+
+```tsx
+import { Code } from 'nextide'
+
+const codeString = `
+export default function Home() {
+  return <h1>Hello World</h1>
+}
+`
+
+export default function Page() {
+  return <Code language="tsx" value={codeString} />
+}
+```
+
+### Editor
+
+Render editable code with syntax highlighting and code completion powered by [Monaco Editor](https://microsoft.github.io/monaco-editor/).
+
+```tsx
+import { Editor } from 'nextide'
+
+const codeString = `
+export default function Home() {
+  return <h1>Hello World</h1>
+}
+`
+
+export default function Page() {
+  return <Editor language="tsx" value={codeString} />
+}
+```
