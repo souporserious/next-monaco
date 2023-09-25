@@ -6,11 +6,11 @@
     "clean": "node -e \"(function rm(directory) { ['.next', '.turbo', 'node_modules', 'dist'].includes(path.basename(directory)) ? fs.rmSync(directory, { recursive: true, force: true }) : fs.existsSync(directory) && fs.statSync(directory).isDirectory() && fs.readdirSync(directory).forEach(filepath => rm(path.join(directory, filepath))); })('.');\""
   },
   "dependencies": {
-    "@types/node": "^18.16.3",
-    "@types/react": "^18.2.0",
-    "@types/react-dom": "^18.2.1",
-    "turbo": "^1.9.3",
+    "@types/node": "^20.6.5",
+    "@types/react": "^18.2.22",
+    "@types/react-dom": "^18.2.7",
+    "turbo": "^1.10.14",
     "tsup": "^6.7.0",
-    "typescript": "^5.0.4"
+    "typescript": "^5.2.2"
   }
 }

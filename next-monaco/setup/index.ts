@@ -69,7 +69,7 @@ StandaloneServices.get<{ setLevel: any }>(ILogService).setLevel(
 
 initializeMonacoService({
   ...getDialogsServiceOverride(),
-  ...getConfigurationServiceOverride(monaco.Uri.file('/')),
+  ...getConfigurationServiceOverride(monaco.Uri.file('/') as any),
   ...getTextmateServiceOverride(),
   ...getThemeServiceOverride(),
   ...getLanguagesServiceOverride(),
