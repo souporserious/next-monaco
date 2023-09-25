@@ -2,7 +2,8 @@
   "private": true,
   "scripts": {
     "dev": "turbo dev",
-    "build": "turbo build"
+    "build": "turbo build",
+    "clean": "node -e \"(function rm(directory) { ['.next', '.turbo', 'node_modules', 'dist'].includes(path.basename(directory)) ? fs.rmSync(directory, { recursive: true, force: true }) : fs.existsSync(directory) && fs.statSync(directory).isDirectory() && fs.readdirSync(directory).forEach(filepath => rm(path.join(directory, filepath))); })('.');\""
   },
   "dependencies": {
     "@types/node": "^18.16.3",
