@@ -23,8 +23,7 @@ async function parseValue(
   }
 }
 
-/** Renders a code block with syntax highlighting. */
-export async function Code({
+async function AsyncCode({
   workingDirectory,
   fileName,
   value,
@@ -49,4 +48,10 @@ export async function Code({
       ))}
     </pre>
   )
+}
+
+/** Renders a code block with syntax highlighting. */
+export function Code(props: CodeProps) {
+  // @ts-expect-error remove when async component types are fixed
+  return <AsyncCode {...props} />
 }
